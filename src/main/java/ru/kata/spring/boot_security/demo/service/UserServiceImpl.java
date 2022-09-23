@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
     private final RoleDao roleDao;
     final PasswordEncoder encoder;
 
-    @Autowired
+
     public UserServiceImpl(UserDao userDao, RoleDao roleDao, @Lazy PasswordEncoder encoder) {
         this.userDao = userDao;
         this.roleDao = roleDao;

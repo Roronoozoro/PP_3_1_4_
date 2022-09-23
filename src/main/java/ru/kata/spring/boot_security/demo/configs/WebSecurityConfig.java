@@ -15,15 +15,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SuccessUserHandler successUserHandler;
 
-    private UserDetailsService userService;
 
-    @Autowired
-    public void setUserService(UserDetailsService userService) {
-        this.userService = userService;
-    }
 
-    public WebSecurityConfig(SuccessUserHandler successUserHandler) {
+    private final UserDetailsService userService;
+
+    public WebSecurityConfig(SuccessUserHandler successUserHandler,UserDetailsService userService) {
         this.successUserHandler = successUserHandler;
+        this.userService = userService;
     }
 
     @Override
