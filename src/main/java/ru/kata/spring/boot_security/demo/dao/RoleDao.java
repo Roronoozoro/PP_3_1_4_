@@ -1,3 +1,4 @@
+/*
 package ru.kata.spring.boot_security.demo.dao;
 
 
@@ -15,3 +16,6 @@ public interface RoleDao {
 
     public Set<Role> getRolesByName(Set<Role> roles);
 }
+
+ */
+

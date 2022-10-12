@@ -3,26 +3,24 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.kata.spring.boot_security.demo.dao.RoleDao;
-import ru.kata.spring.boot_security.demo.dao.UserDao;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.repository.RoleRepository;
+import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
 import java.util.List;
 
-
 @Service
-public class UserServiceImpl implements UserService {
+public class  UserServiceImpl implements UserService {
 
-    private final UserDao userDao;
-    private final RoleDao roleDao;
+    private UserRepository userRepository;
+    private final RoleRepository roleRepository;
     final PasswordEncoder encoder;
 
 
-    public UserServiceImpl(UserDao userDao, RoleDao roleDao, @Lazy PasswordEncoder encoder) {
-        this.userDao = userDao;
-        this.roleDao = roleDao;
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, @Lazy PasswordEncoder encoder) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.encoder = encoder;
     }
 
@@ -30,39 +28,38 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void addUser(User user) {
         user.setPassword(encoder.encode(user.getPassword()));
-        user.setRoles(Collections.singleton(roleDao.getRoleByName("ROLE_USER")));
-        this.userDao.addUser(user);
+        userRepository.save(user);
     }
 
     @Override
     @Transactional
     public void updateUser(User user) {
         user.setPassword(encoder.encode(user.getPassword()));
-        user.setRoles(roleDao.getRolesByName(user.getRoles()));
-        this.userDao.updateUser(user);
+        userRepository.save(user);
     }
 
     @Override
     @Transactional
     public void removeUser(Long id) {
-        this.userDao.removeUser(id);
+        userRepository.deleteById(id);
     }
 
     @Override
     public User findUserById(Long id) {
-        return this.userDao.findUserById(id);
+        return userRepository.getById(id);
     }
 
     @Override
     public List<User> getListUsers() {
-        return this.userDao.getListUsers();
+        return userRepository.findAll();
     }
 
     @Override
-    @org.springframework.transaction.annotation.Transactional(readOnly = true)
+    @Transactional
     public UserDetails loadUserByUsername(String username) {
-        User user = userDao.findUserByUsername(username);
+        User user = userRepository.findUserByUsername(username);
         return user;
     }
 
 }
+

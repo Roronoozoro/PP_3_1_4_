@@ -1,4 +1,6 @@
 package ru.kata.spring.boot_security.demo.model;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -10,7 +12,11 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Component
+@NamedEntityGraph(name = "User.roles",
+        attributeNodes = @NamedAttributeNode("roles")
+)
 public class User implements UserDetails {
 
     @Id
@@ -29,7 +35,7 @@ public class User implements UserDetails {
     @Column(name = "age")
     private int age;
 
-    @ManyToMany(cascade=CascadeType.ALL)
+    @ManyToMany(cascade=CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -40,8 +46,7 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(Long id, String username, String password, String email, int age, Set<Role> roles) {
-        this.id = id;
+    public User(String username, String password, String email, int age, Set<Role> roles) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -123,6 +128,7 @@ public class User implements UserDetails {
     public void setAge(int age) {
         this.age = age;
     }
+
 
     @Override
     public String toString() {
