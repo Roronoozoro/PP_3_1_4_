@@ -1,3 +1,4 @@
+
 package ru.kata.spring.boot_security.demo.controller;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -7,12 +8,15 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+import java.security.Principal;
+
 
 @Controller
 public class AdminController {
 
     private final UserService userService;
     private final RoleService roleService;
+
 
 
     public AdminController(UserService userService, RoleService roleService) {
@@ -34,6 +38,15 @@ public class AdminController {
         model.addAttribute("user", userService.findUserById(id));
         return "admin";
     }
+    @GetMapping("/user")
+    public String getUser(Model model, Principal principal) {
+        User user = (User) userService.loadUserByUsername(principal.getName());
+        model.addAttribute("user", user);
+        return "/user";
+    }
 }
+
+
+
 
 

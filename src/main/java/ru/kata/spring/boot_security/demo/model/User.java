@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -41,7 +40,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> roles;
 
     public User() {
     }
@@ -53,6 +52,8 @@ public class User implements UserDetails {
         this.age = age;
         this.roles = roles;
     }
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

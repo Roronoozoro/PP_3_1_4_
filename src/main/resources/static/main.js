@@ -1,3 +1,4 @@
+
 function getAllUsers() {
     fetch("http://localhost:8080/api/users")
         .then(res => res.json())
@@ -51,7 +52,6 @@ function openModal(id) {
         })
     });
 }
-
 document.getElementById("editForm")
     .addEventListener("submit", editUser);
 
@@ -144,3 +144,8 @@ function refreshTable() {
     }
     getAllUsers()
 }
+
+
+
+
+

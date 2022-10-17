@@ -1,3 +1,4 @@
+
 package ru.kata.spring.boot_security.demo.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +22,10 @@ public class AdminRestController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUsers() {
+      @GetMapping("/users")
+      public ResponseEntity<List<User>> getAllUsers() {
         List<User> userList = userService.getListUsers();
-        if (userList != null && !userList.isEmpty()) {
+       if (userList != null && !userList.isEmpty()) {
             return new ResponseEntity<>(userList, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -65,4 +66,6 @@ public class AdminRestController {
 
 
 }
+
+
 
